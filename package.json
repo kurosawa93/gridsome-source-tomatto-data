@@ -1,0 +1,27 @@
+{
+  "name": "gridsome-source-tomatto-data",
+  "version": "0.0.1",
+  "description": "Plugin to get data from Tomat.to server",
+  "main": "gridsome.server.js",
+  "scripts": {
+    "test": "./node_modules/.bin/eslint gridsome.server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/kurosawa93/gridsome-source-tomatto-data.git"
+  },
+  "keywords": [
+    "grisome-plugin",
+    "gridsome-source",
+    "gridsome",
+    "tomatto"
+  ],
+  "author": "Rachmat Priambudi",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.19.0"
+  },
+  "devDependencies": {
+    "eslint": "^6.5.0"
+  }
+}
