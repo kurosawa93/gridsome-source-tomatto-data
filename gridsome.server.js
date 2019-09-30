@@ -17,7 +17,7 @@ function TomattoData(api, options) {
 
   api.loadSource(async store => {
     // Use the Data store API here: https://gridsome.org/docs/data-store-api
-    await readJsonData(path.resolve(__dirname, '../gapuraplus-dark-theme-gridsome/' + config), apiUrl, projectId, store)
+    await readJsonData(path.resolve(__dirname, '../../' + config), apiUrl, projectId, store)
   })
 }
 
