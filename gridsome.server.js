@@ -25,28 +25,23 @@ async function readJsonData(path, apiUrl, projectId, store){
   let rawJson = fs.readFileSync(path)
   let config = JSON.parse(rawJson)
 
-  for (let [page, value] of Object.entries(config)){
-    await readFormData(page, value.form_content, apiUrl, projectId, store)
+  for (let type of Object.keys(config)){
+    await readFormData(type, apiUrl, projectId, store)
   }
 }
 
-async function readFormData(pageName, formContent, apiUrl, projectId, store){
+async function readFormData(type, apiUrl, projectId, store){
   let apiResponse = null;
   let url = '';
   let Collection = null;
 
-  for (let item in formContent){
-    let typeName = null;
+  url = apiUrl + '/api/content?type=' + type;
+  apiResponse = await axios.get(url, { headers: {'Project-ID': projectId} });
 
-    url = apiUrl + '/api/content?pages=' + pageName + '&type=' + item;
-    apiResponse = await axios.get(url, { headers: {'Project-ID': projectId} });
-    typeName = pageName + '_' + item;
-
-    Collection = store.addContentType(typeName);
-    apiResponse = apiResponse.data.data;
-    if (apiResponse != null && apiResponse.length > 0){
-      pushToGraphQL(Collection, apiResponse)
-    }
+  Collection = store.addContentType(type);
+  apiResponse = apiResponse.data.data;
+  if (apiResponse != null && apiResponse.length > 0){
+    pushToGraphQL(Collection, apiResponse)
   }
 }
 
@@ -63,6 +58,7 @@ function pushToGraphQL(Collection, data) {
         nodeObject[key] = val;
       }
     }
+    console.log(nodeObject)
     Collection.addNode(nodeObject);
   }
 }
