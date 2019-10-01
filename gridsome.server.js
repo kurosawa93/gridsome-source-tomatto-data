@@ -38,7 +38,7 @@ async function readFormData(type, apiUrl, projectId, store){
   url = apiUrl + '/api/content?type=' + type;
   apiResponse = await axios.get(url, { headers: {'Project-ID': projectId} });
 
-  Collection = store.addContentType(type);
+  Collection = store.addCollection(type);
   apiResponse = apiResponse.data.data;
   if (apiResponse != null && apiResponse.length > 0){
     pushToGraphQL(Collection, apiResponse)
@@ -58,7 +58,6 @@ function pushToGraphQL(Collection, data) {
         nodeObject[key] = val;
       }
     }
-    console.log(nodeObject)
     Collection.addNode(nodeObject);
   }
 }
