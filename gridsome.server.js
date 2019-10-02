@@ -26,38 +26,40 @@ async function readJsonData(path, apiUrl, projectId, store){
   let config = JSON.parse(rawJson)
 
   for (let type of Object.keys(config)){
-    await readFormData(type, apiUrl, projectId, store)
+    await readFormData(type, apiUrl, projectId, store, config[type].content)
   }
 }
 
-async function readFormData(type, apiUrl, projectId, store){
-  let apiResponse = null;
-  let url = '';
-  let Collection = null;
+async function readFormData(type, apiUrl, projectId, store, content){
+  let Collection = store.addCollection(type);
+  let url = apiUrl + '/api/content?type=' + type;
+  let { data } = await axios.get(url, { headers: {'Project-ID': projectId} });
+  data = data.data;
 
-  url = apiUrl + '/api/content?type=' + type;
-  apiResponse = await axios.get(url, { headers: {'Project-ID': projectId} });
-
-  Collection = store.addCollection(type);
-  apiResponse = apiResponse.data.data;
-  if (apiResponse != null && apiResponse.length > 0){
-    pushToGraphQL(Collection, apiResponse)
-  }
+  pushToGraphQL(Collection, data, content);
 }
 
-function pushToGraphQL(Collection, data) {
-  let nodeObject = null;
+function pushToGraphQL(Collection, data, content) {
+  let nodeObject = {};
+  let currentItem = {};
+  // default value to handle query with null in graphql
+  for (let j = 0; j < content.length; j++){
+    nodeObject[content[j].key] = '';
+  }
+  nodeObject.id = 'dummy';
+  Collection.addNode(nodeObject);
 
   for (let i = 0; i < data.length; i++){
     nodeObject = {};
-    for (let [key, val] of Object.entries(data[i].value)){
-      if (typeof val == "object"){
-        nodeObject[key] = JSON.stringify(val);
-      }
-      else {
-        nodeObject[key] = val;
+    currentItem = data[i].value;
+
+    for (let j = 0; j < content.length; j++){
+      nodeObject[content[j].key] = currentItem[content[j].key];
+      if (content[j].type == 'rich_text_box'){
+        nodeObject[content[j].key] = JSON.stringify(currentItem[content[j].key]);
       }
     }
+
     Collection.addNode(nodeObject);
   }
 }
