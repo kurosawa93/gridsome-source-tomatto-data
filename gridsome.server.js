@@ -56,7 +56,7 @@ function pushToGraphQL(Collection, data, content) {
     for (let j = 0; j < content.length; j++){
       nodeObject[content[j].key] = currentItem[content[j].key];
       if (content[j].type == 'rich_text_box'){
-        nodeObject[content[j].key] = JSON.stringify(currentItem[content[j].key]);
+        nodeObject[content[j].key] = currentItem[content[j].key].html_content;
       }
     }
 
