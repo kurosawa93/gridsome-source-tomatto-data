@@ -54,9 +54,19 @@ function pushToGraphQL(Collection, data, content) {
     currentItem = data[i].value;
 
     for (let j = 0; j < content.length; j++){
-      nodeObject[content[j].key] = currentItem[content[j].key];
-      if (content[j].type == 'rich_text_box'){
-        nodeObject[content[j].key] = currentItem[content[j].key].html_content;
+      let type = content[j].type
+      
+      switch (type){
+        case 'rich_text_box':
+          nodeObject[content[j].key] = currentItem[type].html_content;
+          break;
+        case 'map':
+          nodeObject['latitude'] = currentItem[type].latitude;
+          nodeObject['longitude'] = currentItem[type].longitude;
+          break;
+        default:
+          nodeObject[content[j].key] = currentItem[content[j].key];
+          break;
       }
     }
 
