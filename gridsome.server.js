@@ -33,10 +33,15 @@ async function readJsonData(path, apiUrl, projectId, store){
 async function readFormData(type, apiUrl, projectId, store, content){
   let Collection = store.addCollection(type);
   let url = apiUrl + '/api/content?type=' + type;
-  let { data } = await axios.get(url, { headers: {'Project-ID': projectId} });
-  data = data.data;
+  try {
+    let { data } = await axios.get(url, { headers: {'Project-ID': projectId} });
+    data = data.data;
 
-  pushToGraphQL(Collection, data, content);
+    pushToGraphQL(Collection, data, content);
+  }
+  catch(error) {
+    console.log('error when loading data. please make sure .env is coreectly set')
+  }
 }
 
 function pushToGraphQL(Collection, data, content) {
