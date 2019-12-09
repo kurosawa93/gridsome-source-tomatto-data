@@ -1,6 +1,6 @@
 {
   "name": "gridsome-source-tomatto-data",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Plugin to get data from Tomat.to server",
   "main": "gridsome.server.js",
   "scripts": {
