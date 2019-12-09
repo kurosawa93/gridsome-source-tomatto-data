@@ -40,7 +40,8 @@ async function readFormData(type, apiUrl, projectId, store, content){
     pushToGraphQL(Collection, data, content);
   }
   catch(error) {
-    console.log('error when loading data. please make sure .env is coreectly set')
+    console.log('error when loading data. please make sure .env is coreectly set. set collection to empty');
+    pushToGraphQL(Collection, [], content);
   }
 }
 
