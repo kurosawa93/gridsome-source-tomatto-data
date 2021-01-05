@@ -19,7 +19,7 @@
   "author": "Rachmat Priambudi",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "fs": "0.0.1-security"
   },
   "devDependencies": {
